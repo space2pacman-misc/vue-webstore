@@ -3,14 +3,35 @@ var webstore = new Vue({
 	data: {
 		sitename: "Vue.js Pet Depot",
 		logo: "img/logo.png",
-		product: {
-			id: 1001,
-			title: "Cat Food, 25lb bag",
-			description: "A 25 pound bag of <em>irresistible</em> organic goodness for your  cat.",
-			price: 2000,
-			image: "img/product.jpg",
-			availableInventory: 5
-		},
+		products: [
+			{
+				id: 1001,
+				title: "Cat Food, 25lb bag",
+				description: "A 25 pound bag of <em>irresistible</em> organic goodness for your  cat.",
+				price: 2000,
+				image: "img/product.jpg",
+				availableInventory: 10,
+				rating: 4
+			},
+			{
+				id: 1002,
+				title: "Cat Food, 25lb bag",
+				description: "A 25 pound bag of <em>irresistible</em> organic goodness for your  cat.",
+				price: 2000,
+				image: "img/product.jpg",
+				availableInventory: 10,
+				rating: 4
+			},
+			{
+				id: 1003,
+				title: "Cat Food, 25lb bag",
+				description: "A 25 pound bag of <em>irresistible</em> organic goodness for your  cat.",
+				price: 2000,
+				image: "img/product.jpg",
+				availableInventory: 10,
+				rating: 4
+			}
+		],
 		cart: [],
 		showProduct: true,
 		order: {
@@ -54,25 +75,37 @@ var webstore = new Vue({
 		}
 	},
 	methods: {
-		addToCart() {
-			this.cart.push(this.product.id);
+		addToCart(product) {
+			this.cart.push(product.id)
 		},
 
 		showCheckout() {
 			this.showProduct = this.showProduct ? false : true;
 		},
 
-		submitForm() {
+		checkRating(product, n) {
+			return product.rating - n >= 0;
+		},
 
+		canAddToCart(product) {
+			return product.availableInventory > this.cartCount(product.id);
+		},
+
+		cartCount(id) {
+			var count = 0;
+
+			for(var i = 0; i < this.cart.length; i++) {
+				if(this.cart[i] === id) {
+					count++;
+				}
+			}
+
+			return count;
 		}
 	},
 	computed: {
 		cartItemCount() {
 			return this.cart.length || "";
-		},
-
-		canAddToCart() {
-			return this.product.availableInventory > this.cartItemCount;
 		}
 	}
 })
